@@ -30,13 +30,20 @@ if ( empty( $content ) ) {
 }
 
 $stop_words = explode( PHP_EOL, file_get_contents( 'stop-words.txt' ) );
-$strip_chars = explode( ' ', '. ! , $ \' " ? ; : @ # % & * ( ) - + = ’ [ ] — { } ^ > < / `');
+$strip_chars = explode( ' ', '. ! , $ \' " ? ; : @ # % & * ( ) - + = ’ [ ] — { } ^ > < / ` ”');
 
 $tokenizer = new WhitespaceTokenizer();
 $sim = new CosineSimilarity();
  
 $results = $tokenizer->tokenize( $content );
- 
+
+// Start of test code to see if simple explode works just as well.
+$content = str_replace( PHP_EOL, ' ', $content );
+
+$results = explode( ' ', $content );
+$results = array_filter( array_map( 'trim', $results ) );
+// End of test code.
+
 $tokens = [];
 
 if ( is_array( $results ) ) {
@@ -60,6 +67,6 @@ if ( is_array( $results ) ) {
 
 arsort( $tokens );
 
-$tokens = array_slice( $tokens, 0, 30, true );
+$tokens = array_slice( $tokens, 0, 20, true );
 
 print_r( $tokens );
