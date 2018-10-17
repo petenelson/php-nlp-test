@@ -1,6 +1,7 @@
 <?php
 
 require_once 'vendor/autoload.php';
+require_once 'singularize.php';
 
 use NlpTools\Tokenizers\WhitespaceTokenizer;
 use NlpTools\Similarity\CosineSimilarity;
@@ -29,7 +30,7 @@ if ( empty( $content ) ) {
 }
 
 $stop_words = explode( PHP_EOL, file_get_contents( 'stop-words.txt' ) );
-$strip_chars = explode( ' ', '. ! , $ \' " ? ; : @ # % & * ( ) - + =');
+$strip_chars = explode( ' ', '. ! , $ \' " ? ; : @ # % & * ( ) - + = ’ [ ] —');
 
 $tokenizer = new WhitespaceTokenizer();
 $sim = new CosineSimilarity();
@@ -44,6 +45,8 @@ if ( is_array( $results ) ) {
 
 		$token = str_replace( $strip_chars, '', strtolower( $token ) );
 
+		$token = singularize( $token );
+
 		if ( strlen( $token ) >= 3 && ! in_array( $token, $stop_words ) ) {
 
 			if ( ! isset( $tokens[ $token ] ) ) {
@@ -57,6 +60,6 @@ if ( is_array( $results ) ) {
 
 arsort( $tokens );
 
-$tokens = array_slice( $tokens, 0, 20, true );
+$tokens = array_slice( $tokens, 0, 30, true );
 
 print_r( $tokens );
