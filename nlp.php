@@ -30,7 +30,7 @@ if ( empty( $content ) ) {
 }
 
 $stop_words = explode( PHP_EOL, file_get_contents( 'stop-words.txt' ) );
-$strip_chars = explode( ' ', '. ! , $ \' " ? ; : @ # % & * ( ) - + = ’ [ ] —');
+$strip_chars = explode( ' ', '. ! , $ \' " ? ; : @ # % & * ( ) - + = ’ [ ] — { } ^ > < / `');
 
 $tokenizer = new WhitespaceTokenizer();
 $sim = new CosineSimilarity();
